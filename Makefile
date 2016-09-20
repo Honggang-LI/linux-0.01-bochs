@@ -8,7 +8,7 @@ AS86	=as -0 -a
 CC86	=cc -0
 LD86	=ld -0
 
-AS	=gas
+AS	=as
 LD	=gld
 LDFLAGS	=-s -x -M
 CC	=gcc

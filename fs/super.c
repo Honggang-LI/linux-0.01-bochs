@@ -5,7 +5,7 @@
 #include <linux/sched.h>
 #include <linux/kernel.h>
 
-/* set_bit uses setb, as gas doesn't recognize setc */
+/* set_bit uses setb, as as doesn't recognize setc */
 #define set_bit(bitnr,addr) ({ \
 register int __res __asm__("ax"); \
 __asm__("bt %2,%3;setb %%al":"=a" (__res):"a" (0),"r" (bitnr),"m" (*(addr))); \

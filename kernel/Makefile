@@ -7,7 +7,7 @@
 #
 
 AR	=gar
-AS	=gas
+AS	=as
 LD	=gld
 LDFLAGS	=-s -x
 CC	=gcc

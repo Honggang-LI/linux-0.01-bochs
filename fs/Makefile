@@ -1,5 +1,5 @@
 AR	=gar
-AS	=gas
+AS	=as
 CC	=gcc
 LD	=gld
 CFLAGS	=-Wall -O -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
