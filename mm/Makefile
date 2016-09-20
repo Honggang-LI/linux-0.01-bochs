@@ -10,7 +10,7 @@ CPP	=gcc -E -nostdinc -I../include
 	$(CC) $(CFLAGS) \
 	-c -o $*.o $<
 .s.o:
-	$(AS) -o $*.o $<
+	$(AS) -32 -o $*.o $<
 .c.s:
 	$(CC) $(CFLAGS) \
 	-S -o $*.s $<
