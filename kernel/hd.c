@@ -50,9 +50,9 @@ static struct hd_request {
 } request[NR_REQUEST];
 
 #define IN_ORDER(s1,s2) \
-((s1)->hd<(s2)->hd || (s1)->hd==(s2)->hd && \
-((s1)->cyl<(s2)->cyl || (s1)->cyl==(s2)->cyl && \
-((s1)->head<(s2)->head || (s1)->head==(s2)->head && \
+(((s1)->hd<(s2)->hd || (s1)->hd==(s2)->hd) && \
+(((s1)->cyl<(s2)->cyl || (s1)->cyl==(s2)->cyl) && \
+(((s1)->head<(s2)->head || (s1)->head==(s2)->head) && \
 ((s1)->sector<(s2)->sector))))
 
 static struct hd_request * this_request = NULL;
@@ -66,10 +66,10 @@ static void rw_abs_hd(int rw,unsigned int nr,unsigned int sec,unsigned int head,
 void hd_init(void);
 
 #define port_read(port,buf,nr) \
-__asm__("cld;rep;insw"::"d" (port),"D" (buf),"c" (nr):"cx","di")
+__asm__("cld;rep;insw"::"d" (port),"D" (buf),"c" (nr)/*:"cx","di"*/)
 
 #define port_write(port,buf,nr) \
-__asm__("cld;rep;outsw"::"d" (port),"S" (buf),"c" (nr):"cx","si")
+__asm__("cld;rep;outsw"::"d" (port),"S" (buf),"c" (nr)/*:"cx","si"*/)
 
 extern void hd_interrupt(void);
 
@@ -192,6 +192,7 @@ static void hd_out(unsigned int drive,unsigned int nsect,unsigned int sect,
 	outb_p(sect,++port);
 	outb_p(cyl,++port);
 	outb_p(cyl>>8,++port);
+	/*0xB0 for slave, 0xA0 for master*/
 	outb_p(0xA0|(drive<<4)|head,++port);
 	outb(cmd,++port);
 }
@@ -205,7 +206,7 @@ static int drive_busy(void)
 			break;
 	i = inb(HD_STATUS);
 	i &= BUSY_STAT | READY_STAT | SEEK_STAT;
-	if (i == READY_STAT | SEEK_STAT)
+	if (i == (READY_STAT | SEEK_STAT))
 		return(0);
 	printk("HD controller times out\n\r");
 	return(1);
@@ -221,7 +222,7 @@ static void reset_controller(void)
 	for(i = 0; i < 10000 && drive_busy(); i++) /* nothing */;
 	if (drive_busy())
 		printk("HD-controller still busy\n\r");
-	if((i = inb(ERR_STAT)) != 1)
+	if((i = inb(HD_STATUS)) & ERR_STAT)
 		printk("HD-controller reset failed: %02x\n\r",i);
 }
 
@@ -256,11 +257,18 @@ static void read_intr(void)
 		bad_rw_intr();
 		return;
 	}
-	port_read(HD_DATA,this_request->bh->b_data+
-		512*(this_request->nsector&1),256);
-	this_request->errors = 0;
-	if (--this_request->nsector)
+
+	if (this_request->nsector==2){
+		this_request->nsector--;
+		port_read(HD_DATA,this_request->bh->b_data,256);
+	}
+	else{
+		port_read(HD_DATA,this_request->bh->b_data+512,256);
 		return;
+	}
+
+	this_request->errors = 0;
+
 	this_request->bh->b_uptodate = 1;
 	this_request->bh->b_dirt = 0;
 	wake_up(&wait_for_request);
