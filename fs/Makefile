@@ -1,7 +1,7 @@
 AR	=gar
 AS	=as
 CC	=gcc
-LD	=gld
+LD	=ld
 CFLAGS	=-m32 -Wall -O -fstrength-reduce  -fomit-frame-pointer \
 	-nostdinc -I../include -Werror -fno-builtin
 CPP	=gcc -E -nostdinc -I../include

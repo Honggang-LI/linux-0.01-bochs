@@ -9,7 +9,7 @@ CC86	=cc -0
 LD86	=ld -0
 
 AS	=as
-LD	=gld
+LD	=ld
 LDFLAGS	=-s -x -M
 CC	=gcc
 CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer -Werror -fno-builtin
