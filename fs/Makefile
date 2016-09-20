@@ -1,4 +1,4 @@
-AR	=gar
+AR	=ar
 AS	=as
 CC	=gcc
 LD	=ld

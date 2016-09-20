@@ -2,7 +2,7 @@ CC	=gcc
 CFLAGS	=-m32 -O -Wall -fstrength-reduce  -fomit-frame-pointer \
 	-finline-functions -nostdinc -I../include -Werror
 AS	=as
-AR	=gar
+AR	=ar
 LD	=ld
 LDFLAGS =-m elf_i386 -x
 CPP	=gcc -E -nostdinc -I../include

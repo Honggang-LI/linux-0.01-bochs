@@ -6,7 +6,7 @@
 # unless it's something special (ie not a .c file).
 #
 
-AR	=gar
+AR	=ar
 AS	=as
 LD	=ld
 LDFLAGS	=-m elf_i386 -x
