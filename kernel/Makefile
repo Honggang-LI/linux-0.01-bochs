@@ -9,7 +9,7 @@
 AR	=gar
 AS	=as
 LD	=ld
-LDFLAGS	=-s -x
+LDFLAGS	=-m elf_i386 -x
 CC	=gcc
 CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer  \
 	-finline-functions -nostdinc -I../include -Werror \
@@ -34,7 +34,7 @@ OBJS  = sched.o system_call.o traps.o asm.o fork.o \
 	mktime.o
 
 kernel.o: vsprintf.o tty_io.o $(OBJS)
-	$(LD) -r -o kernel.o $(OBJS)
+	$(LD) $(LDFLAGS) -r -o kernel.o $(OBJS)
 	sync
 
 vsprintf.o tty_io.o:

@@ -2,6 +2,7 @@ AR	=gar
 AS	=as
 CC	=gcc
 LD	=ld
+LDFLAGS =-m elf_i386 -x
 CFLAGS	=-m32 -Wall -O -fstrength-reduce  -fomit-frame-pointer \
 	-nostdinc -I../include -Werror -fno-builtin
 CPP	=gcc -E -nostdinc -I../include
@@ -20,7 +21,7 @@ OBJS=	open.o read_write.o inode.o file_table.o buffer.o super.o \
 	bitmap.o fcntl.o ioctl.o tty_ioctl.o truncate.o
 
 fs.o: $(OBJS)
-	$(LD) -r -o fs.o $(OBJS)
+	$(LD) $(LDFLAGS) -r -o fs.o $(OBJS)
 
 clean:
 	rm -f core *.o *.a tmp_make

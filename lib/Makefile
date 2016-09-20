@@ -9,7 +9,7 @@
 AR	=gar
 AS	=as
 LD	=ld
-LDFLAGS	=-s -x
+LDFLAGS =-m elf_i386 -x
 CC	=gcc
 CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer  \
 	-finline-functions -nostdinc -I../include -Werror \

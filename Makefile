@@ -10,7 +10,7 @@ LD86	=ld -0
 
 AS	=as
 LD	=ld
-LDFLAGS	=-s -x -M
+LDFLAGS =-m elf_i386 -x -M
 CC	=gcc
 CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer -Werror -fno-builtin
 CPP	=gcc -E -nostdinc -Iinclude

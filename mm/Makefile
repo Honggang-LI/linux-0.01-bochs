@@ -4,6 +4,7 @@ CFLAGS	=-m32 -O -Wall -fstrength-reduce  -fomit-frame-pointer \
 AS	=as
 AR	=gar
 LD	=ld
+LDFLAGS =-m elf_i386 -x
 CPP	=gcc -E -nostdinc -I../include
 
 .c.o:
@@ -20,7 +21,7 @@ OBJS	= memory.o page.o
 all: mm.o
 
 mm.o: $(OBJS)
-	$(LD) -r -o mm.o $(OBJS)
+	$(LD) $(LDFLAGS) -r -o mm.o $(OBJS)
 
 clean:
 	rm -f core *.o *.a tmp_make
