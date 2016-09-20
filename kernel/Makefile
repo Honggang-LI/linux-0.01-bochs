@@ -16,7 +16,7 @@ CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer  \
 	-fno-builtin
 EXTRA_CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer  \
 	-finline-functions -nostdinc -I../include -Werror -Wno-unused-but-set-variable \
-	-fno-builtin
+	-fno-builtin -Wno-char-subscripts
 CPP	=gcc -E -nostdinc -I../include
 
 .c.s:
@@ -29,15 +29,15 @@ CPP	=gcc -E -nostdinc -I../include
 	-c -o $*.o $<
 
 OBJS  = sched.o system_call.o traps.o asm.o fork.o \
-	panic.o printk.o tty_io.o console.o \
+	panic.o printk.o console.o \
 	keyboard.o rs_io.o hd.o sys.o exit.o serial.o \
 	mktime.o
 
-kernel.o: vsprintf.o $(OBJS)
+kernel.o: vsprintf.o tty_io.o $(OBJS)
 	$(LD) -r -o kernel.o $(OBJS)
 	sync
 
-vsprintf.o:
+vsprintf.o tty_io.o:
 	$(CC) $(EXTRA_CFLAGS) -c -o $*.o $<
 
 clean:
