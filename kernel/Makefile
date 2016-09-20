@@ -12,7 +12,7 @@ LD	=gld
 LDFLAGS	=-s -x
 CC	=gcc
 CFLAGS	=-m32 -Wall -O -fstrength-reduce -fomit-frame-pointer  \
-	-finline-functions -mstring-insns -nostdinc -I../include -Werror \
+	-finline-functions -nostdinc -I../include -Werror \
 	-fno-builtin
 CPP	=gcc -E -nostdinc -I../include
 

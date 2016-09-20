@@ -3,7 +3,7 @@ AS	=as
 CC	=gcc
 LD	=gld
 CFLAGS	=-m32 -Wall -O -fstrength-reduce  -fomit-frame-pointer \
-	-mstring-insns -nostdinc -I../include -Werror -fno-builtin
+	-nostdinc -I../include -Werror -fno-builtin
 CPP	=gcc -E -nostdinc -I../include
 
 .c.s:
