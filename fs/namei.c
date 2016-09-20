@@ -52,18 +52,24 @@ static int permission(struct m_inode * inode,int mask)
  */
 static int match(int len,const char * name,struct dir_entry * de)
 {
-	register int same __asm__("ax");
+	int same;
 
 	if (!de || !de->inode || len > NAME_LEN)
 		return 0;
 	if (len < NAME_LEN && de->name[len])
 		return 0;
-	__asm__("cld\n\t"
+	__asm__("pushl %%ecx\n\t"
+		"pushl %%edi\n\t"
+		"pushl %%esi\n\t"
+		"cld\n\t"
 		"fs ; repe ; cmpsb\n\t"
-		"setz %%al"
+		"setz %%al\n\t"
+		"popl %%esi\n\t"
+		"popl %%edi\n\t"
+		"popl %%ecx\n\t"
 		:"=a" (same)
 		:"0" (0),"S" ((long) name),"D" ((long) de->name),"c" (len)
-		:"cx","di","si");
+		/*:"cx","di","si"*/);
 	return same;
 }
 
@@ -255,7 +261,7 @@ static struct m_inode * dir_namei(const char * pathname,
 	if (!(dir = get_dir(pathname)))
 		return NULL;
 	basename = pathname;
-	while (c=get_fs_byte(pathname++))
+	while ((c=get_fs_byte(pathname++)))
 		if (c=='/')
 			basename=pathname;
 	*namelen = pathname-basename-1;
