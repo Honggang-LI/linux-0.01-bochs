@@ -39,12 +39,12 @@ struct super_block * do_mount(int dev)
 		p->s_zmap[i] = NULL;
 	block=2;
 	for (i=0 ; i < p->s_imap_blocks ; i++)
-		if (p->s_imap[i]=bread(dev,block))
+		if ((p->s_imap[i]=bread(dev,block)))
 			block++;
 		else
 			break;
 	for (i=0 ; i < p->s_zmap_blocks ; i++)
-		if (p->s_zmap[i]=bread(dev,block))
+		if ((p->s_zmap[i]=bread(dev,block)))
 			block++;
 		else
 			break;
