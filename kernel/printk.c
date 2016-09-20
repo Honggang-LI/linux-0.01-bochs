@@ -8,6 +8,7 @@
 
 #include <linux/kernel.h>
 
+extern int vsprintf();
 static char buf[1024];
 
 int printk(const char *fmt, ...)
