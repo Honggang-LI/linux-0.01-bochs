@@ -91,14 +91,14 @@ pg2:		# This is not used yet, but if you
 
 .org 0x4000
 after_page_tables:
-	pushl $0		# These are the parameters to main :-)
+	pushl $0		# These are the parameters to start_kernel :-)
 	pushl $0
 	pushl $0
-	pushl $L6		# return address for main, if it decides to.
-	pushl $_main
+	pushl $L6		# return address for start_kernel, if it decides to.
+	pushl $_start_kernel
 	jmp setup_paging
 L6:
-	jmp L6			# main should never return here, but
+	jmp L6			# start_kernel should never return here, but
 				# just in case, we know what happens.
 
 /* This is the default interrupt "handler" :-) */

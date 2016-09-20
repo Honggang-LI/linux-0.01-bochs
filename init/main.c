@@ -6,12 +6,12 @@
  * we need this inline - forking from kernel space will result
  * in NO COPY ON WRITE (!!!), until an execve is executed. This
  * is no problem, but for the stack. This is handled by not letting
- * main() use the stack at all after fork(). Thus, no function
+ * start_kernel() use the stack at all after fork(). Thus, no function
  * calls - which means inline code for fork too, as otherwise we
  * would use the stack upon exit from 'fork()'.
  *
  * Actually only pause and fork are needed inline, so that there
- * won't be any messing with the stack from main(), but we define
+ * won't be any messing with the stack from start_kernel(), but we define
  * some others too.
  */
 inline _syscall0(int,fork)
@@ -76,7 +76,7 @@ static void time_init(void)
 	startup_time = kernel_mktime(&time);
 }
 
-void main(void)		/* This really IS void, no error here. */
+void start_kernel(void)
 {			/* The startup routine assumes (well, ...) this */
 /*
  * Interrupts are still disabled. Do necessary setups, then
