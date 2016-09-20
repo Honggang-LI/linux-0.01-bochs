@@ -5,10 +5,14 @@
 #include <linux/kernel.h>
 
 #define clear_block(addr) \
-__asm__("cld\n\t" \
+__asm__("pushl %%ecx\n\t" \
+	"pushl %%edi\n\t" \
+	"cld\n\t" \
 	"rep\n\t" \
-	"stosl" \
-	::"a" (0),"c" (BLOCK_SIZE/4),"D" ((long) (addr)):"cx","di")
+	"stosl\n\t" \
+	"popl %%edi\n\t" \
+	"popl %%ecx\n\t" \
+	::"a" (0),"c" (BLOCK_SIZE/4),"D" ((long) (addr)))
 
 #define set_bit(nr,addr) ({\
 register int res __asm__("ax"); \
@@ -22,7 +26,10 @@ res;})
 
 #define find_first_zero(addr) ({ \
 int __res; \
-__asm__("cld\n" \
+__asm__("pushl %%eax\n\t" \
+	"pushl %%edx\n\t" \
+	"pushl %%esi\n\t" \
+	"cld\n" \
 	"1:\tlodsl\n\t" \
 	"notl %%eax\n\t" \
 	"bsfl %%eax,%%edx\n\t" \
@@ -32,8 +39,11 @@ __asm__("cld\n" \
 	"2:\taddl $32,%%ecx\n\t" \
 	"cmpl $8192,%%ecx\n\t" \
 	"jl 1b\n" \
-	"3:" \
-	:"=c" (__res):"c" (0),"S" (addr):"ax","dx","si"); \
+	"3:\n\t" \
+	"popl %%esi\n\t" \
+	"popl %%edx\n\t" \
+	"popl %%eax\n\t" \
+	:"=c" (__res):"c" (0),"S" (addr)); \
 __res;})
 
 void free_block(int dev, int block)
@@ -74,7 +84,7 @@ int new_block(int dev)
 		panic("trying to get new block from nonexistant device");
 	j = 8192;
 	for (i=0 ; i<8 ; i++)
-		if (bh=sb->s_zmap[i])
+		if ((bh=sb->s_zmap[i]))
 			if ((j=find_first_zero(bh->b_data))<8192)
 				break;
 	if (i>=8 || !bh || j>=8192)
@@ -138,7 +148,7 @@ struct m_inode * new_inode(int dev)
 		panic("new_inode with unknown device");
 	j = 8192;
 	for (i=0 ; i<8 ; i++)
-		if (bh=sb->s_imap[i])
+		if ((bh=sb->s_imap[i]))
 			if ((j=find_first_zero(bh->b_data))<8192)
 				break;
 	if (!bh || j >= 8192 || j+i*8192 > sb->s_ninodes) {
