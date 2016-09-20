@@ -34,13 +34,13 @@ _keyboard_interrupt:
 	movl $0x10,%eax
 	mov %ax,%ds
 	mov %ax,%es
-	xorl %al,%al		/* %eax is scan code */
+	xorl %eax,%eax		/* %eax is scan code */
 	inb $0x60,%al
 	cmpb $0xe0,%al
 	je set_e0
 	cmpb $0xe1,%al
 	je set_e1
-	call key_table(,%eax,4)
+	call *key_table(,%eax,4)
 	movb $0,e0
 e0_e1:	inb $0x61,%al
 	jmp 1f
