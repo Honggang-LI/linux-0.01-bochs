@@ -33,11 +33,11 @@ static unsigned long scr_end=SCREEN_START+LINES*COLUMNS*2;
 static unsigned long pos;
 static unsigned long x,y;
 static unsigned long top=0,bottom=LINES;
-static unsigned long lines=LINES,columns=COLUMNS;
+unsigned long lines=LINES,columns=COLUMNS;
 static unsigned long state=0;
 static unsigned long npar,par[NPAR];
 static unsigned long ques=0;
-static unsigned char attr=0x07;
+unsigned char attr=0x07;
 
 /*
  * this is what the terminal answers to a ESC-Z or csi0c
@@ -77,7 +77,7 @@ static void scrup(void)
 				"cld\n\t"
 				"rep\n\t"
 				"movsl\n\t"
-				"movl _columns,%1\n\t"
+				"movl columns,%1\n\t"
 				"rep\n\t"
 				"stosw\n\t"
 				"popl %%esi\n\t"
@@ -112,7 +112,7 @@ static void scrup(void)
 			"cld\n\t"
 			"rep\n\t"
 			"movsl\n\t"
-			"movl _columns,%%ecx\n\t"
+			"movl columns,%%ecx\n\t"
 			"rep\n\t"
 			"stosw\n\t"
 			"popl %%esi\n\t"
@@ -136,7 +136,7 @@ static void scrdown(void)
 		"rep\n\t"
 		"movsl\n\t"
 		"addl $2,%%edi\n\t"	/* %edi has been decremented by 4 */
-		"movl _columns,%%ecx\n\t"
+		"movl columns,%%ecx\n\t"
 		"rep\n\t"
 		"stosw\n\t"
 		"popl %%esi\n\t"
@@ -418,7 +418,7 @@ void con_write(struct tty_struct * tty)
 						lf();
 					}
 					__asm__("pushl %%eax\n\t"
-						"movb _attr,%%ah\n\t"
+						"movb attr,%%ah\n\t"
 						"movw %%ax,%1\n\t"
 						"popl %%eax\n\t"
 						::"a" (c),"m" (*(short *)pos)
