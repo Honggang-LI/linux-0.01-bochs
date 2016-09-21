@@ -26,7 +26,7 @@
 
 /* Root device at bootup. */
 #if	defined(LINUS_HD)
-#define ROOT_DEV 0x306
+#define ROOT_DEV 0x301
 #elif	defined(LASU_HD)
 #define ROOT_DEV 0x302
 #else
@@ -45,7 +45,7 @@
 #if	defined(LASU_HD)
 #define HD_TYPE { 7,35,915,65536,920,0 }
 #elif	defined(LINUS_HD)
-#define HD_TYPE { 5,17,980,300,980,0 },{ 5,17,980,300,980,0 }
+#define HD_TYPE { 4, 20, 1024, 0, 4, 0}
 #else
 #error "must define a hard-disk type"
 #endif
