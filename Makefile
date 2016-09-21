@@ -40,12 +40,15 @@ tools/build: tools/build.c
 
 boot/head.o: boot/head.s
 
-tools/system:	boot/head.o init/main.o \
-		$(ARCHIVES) $(LIBS)
-	$(LD) $(LDFLAGS) boot/head.o init/main.o \
+tools/system:   boot/head.o init/main.o \
+	$(ARCHIVES) $(LIBS)
+	$(LD) $(LDFLAGS) -Ttext 0 -e startup_32 boot/head.o init/main.o \
 	$(ARCHIVES) \
 	$(LIBS) \
-	-o tools/system > System.map
+	-o tools/system.org > System.map
+	cp tools/system.org tools/system.tmp
+	strip tools/system.tmp
+	objcopy -O binary -R .note -R .comment tools/system.tmp tools/system
 
 kernel/kernel.o:
 	(cd kernel; make)
