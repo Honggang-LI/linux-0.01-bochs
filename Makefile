@@ -4,9 +4,9 @@
 # remove them from the CFLAGS defines.
 #
 
-AS86	=as -0 -a
-CC86	=cc -0
-LD86	=ld -0
+AS86	=as86 -0 -a
+CC86	=bcc -0
+LD86	=ld86 -0
 
 AS	=as
 LD	=ld
