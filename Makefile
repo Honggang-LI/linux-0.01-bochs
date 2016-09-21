@@ -36,7 +36,7 @@ Image: boot/boot tools/system tools/build
 tools/build: tools/build.c
 	$(CC) $(CFLAGS) \
 	-o tools/build tools/build.c
-	chmem +65000 tools/build
+	chmod 0755 tools/build
 
 boot/head.o: boot/head.s
 
