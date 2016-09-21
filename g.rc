@@ -1,0 +1,14 @@
+romimage: file=$BXSHARE/BIOS-bochs-latest 
+vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
+floppya: 1_44=Image, status=inserted
+boot: floppy
+#log: bochsout.txt
+panic: action=ask
+gdbstub: enabled=1, port=1234, text_base=0, data_base=0, bss_base=0
+#display_library: x, options="gui_debug"
+#magic_break: enabled=1
+mouse: enabled=0
+megs: 8
+
+ata0-master: type=disk, mode=flat, path="hda.img", cylinders=1024, heads=4, spt=20
+ata0-slave:  type=disk, mode=flat, path="hdb.img", cylinders=1024, heads=4, spt=20
