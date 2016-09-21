@@ -62,9 +62,11 @@ fs/fs.o:
 lib/lib.a:
 	(cd lib; make)
 
-boot/boot:	boot/boot.s tools/system
-	(echo -n "SYSSIZE = (";ls -l tools/system | grep system \
-		| cut -c25-31 | tr '\012' ' '; echo "+ 15 ) / 16") > tmp.s
+boot/boot:      boot/boot.s tools/system
+	A=$$(ls -l tools/system | grep system | cut -d ' ' -f5 | tr '\012' ' '); \
+	B="($${A} + 15)/16"; \
+	SIZE=$$(echo $${B} | bc);\
+	echo "SYSSIZE = $$SIZE" > tmp.s
 	cat boot/boot.s >> tmp.s
 	$(AS86) -o boot/boot.o tmp.s
 	rm -f tmp.s
