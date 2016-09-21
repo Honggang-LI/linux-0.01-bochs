@@ -34,7 +34,7 @@ OBJS  = sched.o system_call.o traps.o asm.o fork.o \
 	mktime.o
 
 kernel.o: vsprintf.o tty_io.o $(OBJS)
-	$(LD) $(LDFLAGS) -r -o kernel.o $(OBJS)
+	$(LD) $(LDFLAGS) -r -o kernel.o $(OBJS) vsprintf.o tty_io.o
 	sync
 
 vsprintf.o tty_io.o:
