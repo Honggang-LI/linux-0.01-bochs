@@ -221,7 +221,8 @@ __asm__("movb %3,%%dh\n\t" \
 	:"=d" (__base) \
 	:"m" (*((addr)+2)), \
 	 "m" (*((addr)+4)), \
-	 "m" (*((addr)+7))); \
+	 "m" (*((addr)+7)), \
+	 "g" (addr)); \
 __base;})
 
 #define get_base(ldt) _get_base( ((char *)&(ldt)) )
