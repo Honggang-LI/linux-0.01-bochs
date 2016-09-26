@@ -10,6 +10,10 @@ It had been built with a Fedora-24 x86-64 machine. To test it, please run:
 5) cp hda.img hdb.img  
 6) /PATH/TO/bochs -q -f b.rc  
 
+
+![Screenshot](linux-0.01-bochs.png)  
+![Screenshot](linux-0.01.png)  
+
 Reference  
 [1] http://www.oldlinux.org/  
 [2] The Art of Linux Kernel Design: Illustrating the Operating System Design Principle and Implementation ISBN-10: 1466518030  
